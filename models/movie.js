@@ -7,11 +7,11 @@ const movieSchema = mongoose.Schema({
     required: true,
   },
   director: {
-    type: Number,
+    type: String,
     required: true,
   },
   duration: {
-    type: String,
+    type: Number,
     required: true,
   },
   year: {
@@ -38,9 +38,11 @@ const movieSchema = mongoose.Schema({
     validate: validator.isURL,
   },
   owner: {
+    type: String,
     required: true,
   },
   movieId: {
+    type: String,
     required: true,
   },
   nameRU: {
