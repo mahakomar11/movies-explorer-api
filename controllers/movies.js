@@ -2,13 +2,13 @@ const Movie = require('../models/movie');
 const CustomError = require('../utils/errors');
 
 const getMovies = (req, res, next) => {
-  Movie.find({ owner: req.userId })
+  Movie.find({ owner: req.user._id })
     .then((movies) => res.send(movies))
     .catch(next);
 };
 
 const createMovie = (req, res, next) => {
-  Movie.create({ ...req.body, owner:  req.userId})
+  Movie.create({ ...req.body, owner:  req.user._id})
     .then((movie) => res.send(movie))
     .catch(next);
 };
@@ -18,7 +18,7 @@ const deleteMovie = (req, res, next) => {
     .then((movie) => {
       if (!movie)
         throw new CustomError(404, "Запрашиваемая карточка не найдена");
-      else if (movie.owner.toString() === req.userId)
+      else if (movie.owner.toString() === req.user._id)
         return Movie.findByIdAndRemove(movie._id);
       else
         throw new CustomError(
