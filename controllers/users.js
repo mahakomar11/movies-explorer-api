@@ -33,7 +33,10 @@ const createUser = (req, res, next) => {
   bcrypt
     .hash(password, 10)
     .then((hash) => User.create({ name, email, password: hash }))
-    .then((user) => res.send(user))
+    .then((user) => {
+      const { _id, name, email } = user;
+      res.send({_id, name, email})
+    })
     .catch(next);
 };
 
