@@ -13,12 +13,17 @@ const handleErrors = require('./middlewares/errors');
 
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/moviesdb', {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-  useUnifiedTopology: true,
-});
+const { NODE_ENV, DB_URL } = process.env;
+
+mongoose.connect(
+  NODE_ENV === 'production' ? DB_URL : 'mongodb://localhost:27017/moviesdb',
+  {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true,
+  }
+);
 
 app.use(cors());
 

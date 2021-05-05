@@ -28,14 +28,14 @@ const createUser = (req, res, next) => {
   const { name, email, password } = req.body;
 
   if (!email || !password)
-    throw new CustomError(400, "Поля email и password обязательные");
+    throw new CustomError(400, 'Поля email и password обязательные');
 
   bcrypt
     .hash(password, 10)
     .then((hash) => User.create({ name, email, password: hash }))
     .then((user) => {
       const { _id, name, email } = user;
-      res.send({_id, name, email})
+      res.send({ _id, name, email });
     })
     .catch(next);
 };
@@ -44,22 +44,26 @@ const login = (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password)
-    throw new CustomError(400, "Поля email и password обязательные");
+    throw new CustomError(400, 'Поля email и password обязательные');
 
   const { NODE_ENV, JWT_SECRET } = process.env;
 
   User.findOne({ email })
-    .select("+password")
+    .select('+password')
     .then((user) => {
-      if (!user) throw new CustomError(401, "Неправильные почта или пароль");
+      if (!user) throw new CustomError(401, 'Неправильные почта или пароль');
 
       return bcrypt.compare(password, user.password).then((matched) => {
         if (!matched)
-          throw new CustomError(401, "Неправильные почта или пароль");
+          throw new CustomError(401, 'Неправильные почта или пароль');
 
-        const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', {
-          expiresIn: "7d",
-        });
+        const token = jwt.sign(
+          { _id: user._id },
+          NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+          {
+            expiresIn: '7d',
+          }
+        );
 
         return res.send({ token });
       });
@@ -71,5 +75,5 @@ module.exports = {
   getProfile,
   updateProfile,
   createUser,
-  login
+  login,
 };
