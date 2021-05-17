@@ -19,7 +19,7 @@ moviesRouter.post(
       image: Joi.string().required(),
       trailer: Joi.string().required(),
       thumbnail: Joi.string().required(),
-      movieId: Joi.string().required(), //.length(24),
+      movieId: Joi.number().required(),
       nameRU: Joi.string().required(),
       nameEN: Joi.string().required(),
     }),
@@ -30,7 +30,7 @@ moviesRouter.delete(
   '/:movieId',
   celebrate({
     params: Joi.object().keys({
-      cardId: Joi.string().alphanum().length(24),
+      movieId: Joi.string().alphanum().length(24),
     }),
   }),
   deleteMovie
