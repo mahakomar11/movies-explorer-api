@@ -8,6 +8,7 @@ const { login, createUser } = require('../controllers/users');
 const usersRouter = require('./users');
 const moviesRouter = require('./movies');
 const handleErrors = require('../middlewares/errors');
+const CustomError = require('../utils/errors');
 
 router.use(cors());
 
@@ -41,11 +42,11 @@ router.post(
 router.use(auth);
 router.use('/users', usersRouter);
 router.use('/movies', moviesRouter);
-router.use(errorLogger);
 router.use(errors());
-router.use(handleErrors);
-router.use('*', (req, res) => {
-  res.status(404).send({ message: 'Запрашиваемая страница не найдена' });
+router.use('*', (req, res, next) => {
+  next(new CustomError(404, 'Запрашиваемая страница не найдена'));
 });
+router.use(errorLogger);
+router.use(handleErrors);
 
 module.exports = router;

@@ -8,7 +8,7 @@ const {
 } = require('../controllers/movies');
 
 const urlValidator = (value, helpers) => {
-  if (validator.isURL(value)) {console.log('not url'); return value}
+  if (validator.isURL(value)) return value;
   return helpers.message(`${value} is not url`);
 };
 
