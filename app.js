@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const { errors, celebrate, Joi } = require('celebrate');
+const dbUrl = require('./config');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const auth = require('./middlewares/auth');
 const { login, createUser } = require('./controllers/users');
@@ -12,12 +13,13 @@ const moviesRouter = require('./routes/movies');
 const handleErrors = require('./middlewares/errors');
 const CustomError = require('./utils/errors');
 
+
 const app = express();
 
 const { NODE_ENV, DB_URL } = process.env;
 
 mongoose.connect(
-  NODE_ENV === 'production' ? DB_URL : 'mongodb://localhost:27017/moviesdb',
+  NODE_ENV === 'production' ? DB_URL : dbUrl,
   {
     useNewUrlParser: true,
     useCreateIndex: true,
