@@ -1,10 +1,16 @@
 const moviesRouter = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
+const validator = require('validator');
 const {
   getMovies,
   createMovie,
   deleteMovie,
 } = require('../controllers/movies');
+
+const urlValidator = (value, helpers) => {
+  if (validator.isURL(value)) {console.log('not url'); return value}
+  return helpers.message(`${value} is not url`);
+};
 
 moviesRouter.get('/', getMovies);
 moviesRouter.post(
@@ -16,9 +22,9 @@ moviesRouter.post(
       duration: Joi.number().required(),
       year: Joi.string().required(),
       description: Joi.string().required(),
-      image: Joi.string().required(),
-      trailer: Joi.string().required(),
-      thumbnail: Joi.string().required(),
+      image: Joi.string().required().custom(urlValidator),
+      trailer: Joi.string().required().custom(urlValidator),
+      thumbnail: Joi.string().required().custom(urlValidator),
       movieId: Joi.number().required(),
       nameRU: Joi.string().required(),
       nameEN: Joi.string().required(),
