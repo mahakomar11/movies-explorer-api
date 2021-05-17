@@ -1,13 +1,13 @@
+const router = require('express').Router();
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const { errors, celebrate, Joi } = require('celebrate');
 const { requestLogger, errorLogger } = require('../middlewares/logger');
 const auth = require('../middlewares/auth');
 const { login, createUser } = require('../controllers/users');
-const usersRouter = require('../routes/users');
-const moviesRouter = require('../routes/movies');
+const usersRouter = require('./users');
+const moviesRouter = require('./movies');
 const handleErrors = require('../middlewares/errors');
-const router = require('express').Router();
 
 router.use(cors());
 
